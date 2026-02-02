@@ -130,16 +130,11 @@ if analyze:
 
 st.subheader("Climate-Based Design Analysis")
 for msg in climate_analysis():
-    st.success(msg)
+    st.success(msg)  
 def british_standards_check():
-    issues = []
+    issues = []    
     
-st.subheader("British Standards Compliance Check")
-for msg in british_standards_check():
-    if msg.startswith("❌"):
-        st.error(msg)
-    else:
-        st.success(msg)
+
     # Minimum sizes (m²)
     min_sizes = {
         "Bedroom": 11.5,
@@ -162,3 +157,12 @@ for msg in british_standards_check():
         issues.append("✔ Bathroom count meets British Standards")
 
     return issues
+
+st.subheader("British Standards Compliance Check")
+for msg in british_standards_check():
+    if msg.startswith("❌"):
+        st.error(msg)
+    else:
+        st.success(msg)
+        
+

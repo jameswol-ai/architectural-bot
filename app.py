@@ -65,10 +65,19 @@ def analyze_layout(bedrooms, bathrooms, living_rooms, kitchens):
     return messages
 
 # --- Display Floor Plan ---
+floor_plan_text = ""
 if generate:
     st.subheader("Generated Multi-Floor Plan")
     floor_plan_text = generate_multi_floor_plan(floors, bedrooms, bathrooms, living_rooms, kitchens)
     st.text(floor_plan_text)
+
+    # --- Download Button ---
+    st.download_button(
+        label="Download Floor Plan as .txt",
+        data=floor_plan_text,
+        file_name="floor_plan.txt",
+        mime="text/plain"
+    )
 
 # --- Display Analysis ---
 if analyze:

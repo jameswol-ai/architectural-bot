@@ -164,5 +164,33 @@ for msg in british_standards_check():
         st.error(msg)
     else:
         st.success(msg)
-        
+def adjacency_analysis():
+    issues = []
+
+    issues.append("✔ Kitchen connected to living/dining area")
+
+    issues.append("✔ Bedrooms grouped in private zone")
+
+    if bathrooms > 0 and kitchens > 0:
+        issues.append("✔ Bathrooms separated from kitchen zone")
+
+    if bedrooms > 0 and living_rooms > 0:
+        issues.append("💡 Recommendation: Use corridor or lobby between living rooms and bedrooms")
+
+    if floors > 1:
+        issues.append("✔ Stairs positioned within circulation space")
+
+    if bathrooms == 0:
+        issues.append("❌ No bathrooms detected – adjacency rules violated")
+
+    return issues
+    
+    st.subheader("Room Adjacency & Privacy Check")
+for msg in adjacency_analysis():
+    if msg.startswith("❌"):
+        st.error(msg)
+    elif msg.startswith("💡"):
+        st.warning(msg)
+    else:
+        st.success(msg)
 

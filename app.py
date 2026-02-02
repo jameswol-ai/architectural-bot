@@ -220,3 +220,10 @@ def cost_estimation():
 
     return total_area, costs
 
+st.subheader("Preliminary Cost Estimation (UK)")
+
+area, costs = cost_estimation()
+st.info(f"Estimated Gross Floor Area: {int(area)} m²")
+
+for level, cost in costs.items():
+    st.success(f"{level}: £{cost:,}")

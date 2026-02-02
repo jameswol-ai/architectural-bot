@@ -10,12 +10,7 @@ def climate_analysis():
     notes.append("💡 Encourage cross-ventilation in all habitable rooms")
 
     return notes
-st.subheader("British Standards Compliance Check")
-for msg in british_standards_check():
-    if msg.startswith("❌"):
-        st.error(msg)
-    else:
-        st.success(msg)
+
 # app.py
 import streamlit as st
 import random
@@ -138,7 +133,13 @@ for msg in climate_analysis():
     st.success(msg)
 def british_standards_check():
     issues = []
-
+    
+st.subheader("British Standards Compliance Check")
+for msg in british_standards_check():
+    if msg.startswith("❌"):
+        st.error(msg)
+    else:
+        st.success(msg)
     # Minimum sizes (m²)
     min_sizes = {
         "Bedroom": 11.5,

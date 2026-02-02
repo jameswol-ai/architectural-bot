@@ -164,6 +164,16 @@ for msg in british_standards_check():
         st.error(msg)
     else:
         st.success(msg)
+            
+    st.subheader("Room Adjacency & Privacy Check")
+for msg in adjacency_analysis():
+    if msg.startswith("❌"):
+        st.error(msg)
+    elif msg.startswith("💡"):
+        st.warning(msg)
+    else:
+        st.success(msg)
+        
 def adjacency_analysis():
     issues = []
 
@@ -184,13 +194,5 @@ def adjacency_analysis():
         issues.append("❌ No bathrooms detected – adjacency rules violated")
 
     return issues
-    
-    st.subheader("Room Adjacency & Privacy Check")
-for msg in adjacency_analysis():
-    if msg.startswith("❌"):
-        st.error(msg)
-    elif msg.startswith("💡"):
-        st.warning(msg)
-    else:
-        st.success(msg)
+
 

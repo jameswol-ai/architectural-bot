@@ -1,9 +1,8 @@
 # app.py
 import streamlit as st
-import matplotlib.pyplot as plt
 import random
 
-st.title("Architectural AI Assistant")
+st.title("Architectural AI Assistant (No Extra Packages)")
 
 st.header("Project Requirements")
 building_type = st.selectbox("Building Type", ["Residential", "Commercial", "Office", "Mixed-use"])
@@ -18,44 +17,39 @@ generate = st.button("Generate Floor Plan")
 analyze = st.button("Analyze Layout")
 
 # --- Floor Plan Generation ---
-def generate_floor_plan(floors, bedrooms, bathrooms):
-    fig, ax = plt.subplots()
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, 10)
-    ax.set_title("Simplified Floor Plan Diagram")
+def generate_floor_plan_text(bedrooms, bathrooms):
+    layout = "Floor Plan Diagram (Simplified):\n"
+    layout += "-"*30 + "\n"
     
-    # Randomly generate room blocks for demonstration
     for i in range(bedrooms):
-        x = random.uniform(0, 7)
-        y = random.uniform(0, 7)
-        ax.add_patch(plt.Rectangle((x, y), 2, 2, fill=None, edgecolor="blue", linewidth=2))
-        ax.text(x+0.5, y+0.5, f"Bedroom {i+1}", fontsize=8)
-    for i in range(bathrooms):
-        x = random.uniform(0, 8)
-        y = random.uniform(0, 8)
-        ax.add_patch(plt.Rectangle((x, y), 1.5, 1.5, fill=None, edgecolor="red", linewidth=2))
-        ax.text(x+0.2, y+0.2, f"Bath {i+1}", fontsize=7)
+        layout += f"[Bedroom {i+1}]  "
+        if (i+1) % 3 == 0:
+            layout += "\n"
     
-    return fig
+    layout += "\n"
+    for i in range(bathrooms):
+        layout += f"[Bath {i+1}]  "
+    layout += "\n" + "-"*30
+    return layout
 
 # --- Layout Analysis ---
 def analyze_layout(bedrooms, bathrooms):
     messages = []
     if bedrooms < bathrooms:
-        messages.append("Warning: More bathrooms than bedrooms.")
+        messages.append("⚠ Warning: More bathrooms than bedrooms.")
     if bedrooms > 6:
-        messages.append("Consider splitting the house into zones for better space utilization.")
+        messages.append("💡 Suggestion: Consider splitting the house into zones for better space utilization.")
     if bathrooms == 0:
-        messages.append("Add at least one bathroom.")
+        messages.append("⚠ Add at least one bathroom.")
     if not messages:
-        messages.append("Layout seems reasonable.")
+        messages.append("✅ Layout seems reasonable.")
     return messages
 
 # --- Display Floor Plan ---
 if generate:
     st.subheader("Generated Floor Plan")
-    fig = generate_floor_plan(floors, bedrooms, bathrooms)
-    st.pyplot(fig)
+    floor_plan_text = generate_floor_plan_text(bedrooms, bathrooms)
+    st.text(floor_plan_text)
 
 # --- Display Analysis ---
 if analyze:

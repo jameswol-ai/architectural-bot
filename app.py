@@ -1,3 +1,15 @@
+def climate_analysis():
+    notes = []
+    notes.append("🌞 Climate Mode: Hot / Tropical")
+
+    notes.append("✔ Living areas oriented to cooler sides (North/South recommended)")
+    notes.append("✔ Bedrooms grouped away from direct afternoon sun")
+    notes.append("✔ Bathrooms require ventilation openings")
+
+    notes.append("💡 Recommendation: Provide wide overhangs and shaded windows")
+    notes.append("💡 Encourage cross-ventilation in all habitable rooms")
+
+    return notes
 # app.py
 import streamlit as st
 import random
@@ -114,3 +126,7 @@ if analyze:
     st.subheader("Design Analysis")
     for msg in analyze_layout(bedrooms, bathrooms, living_rooms, kitchens):
         st.info(msg)
+
+st.subheader("Climate-Based Design Analysis")
+for msg in climate_analysis():
+    st.success(msg)

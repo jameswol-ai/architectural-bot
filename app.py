@@ -10,7 +10,6 @@ def climate_analysis():
     notes.append("💡 Encourage cross-ventilation in all habitable rooms")
 
     return notes
-
 st.subheader("British Standards Compliance Check")
 for msg in british_standards_check():
     if msg.startswith("❌"):

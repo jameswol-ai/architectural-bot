@@ -158,19 +158,19 @@ def british_standards_check():
 
     return issues
 
-st.subheader("British Standards Compliance Check")
-for msg in british_standards_check():
-    if msg.startswith("❌"):
-        st.error(msg)
-    else:
-        st.success(msg)
-            
-    st.subheader("Room Adjacency & Privacy Check")
+st.subheader("Room Adjacency & Privacy Check")
 for msg in adjacency_analysis():
     if msg.startswith("❌"):
         st.error(msg)
     elif msg.startswith("💡"):
         st.warning(msg)
+    else:
+        st.success(msg)
+
+st.subheader("British Standards Compliance Check")
+for msg in british_standards_check():
+    if msg.startswith("❌"):
+        st.error(msg)
     else:
         st.success(msg)
         

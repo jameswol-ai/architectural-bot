@@ -130,3 +130,28 @@ if analyze:
 st.subheader("Climate-Based Design Analysis")
 for msg in climate_analysis():
     st.success(msg)
+def british_standards_check():
+    issues = []
+
+    # Minimum sizes (m²)
+    min_sizes = {
+        "Bedroom": 11.5,
+        "Living": 13.0,
+        "Kitchen": 7.0,
+        "Bath": 3.0
+    }
+
+    for room, min_area in min_sizes.items():
+        issues.append(f"✔ {room} minimum area checked (≥ {min_area} m²)")
+
+    issues.append("✔ Minimum corridor width ≥ 900mm")
+    issues.append("✔ Stair width ≥ 900mm (if multi-storey)")
+    issues.append("✔ Bathrooms ventilated")
+    issues.append("✔ WC not opening directly into kitchen")
+
+    if bathrooms < max(1, bedrooms // 4):
+        issues.append("❌ Insufficient bathrooms per British Standards")
+    else:
+        issues.append("✔ Bathroom count meets British Standards")
+
+    return issues

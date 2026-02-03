@@ -236,6 +236,11 @@ st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 
 for level, cost in costs.items():
     st.success(f"{level}: £{cost:,}")
+    
+if design area > plot area:
+    st.error("❌ Design area exceeds buildable plot area")
+else:
+    st.success("✔ Design area fits within buildable plot area")
 
 def site_analysis(plot_width, plot_depth, road_side):
     messages = []
@@ -267,13 +272,10 @@ def site_analysis(plot_width, plot_depth, road_side):
 
     messages.append("💡 Living spaces recommended away from road for privacy")
     messages.append("💡 Bedrooms should avoid west orientation in hot climates")
-
     return messages
 
-if Design area > site area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")
+
+
 
 st.subheader("Site Orientation & Plot Analysis")
 

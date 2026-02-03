@@ -238,6 +238,12 @@ for level, cost in costs.items():
     st.success(f"{level}: £{cost:,}")
 
 
+if floor area > plot:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")
+
+
 def site_analysis(plot_width, plot_depth, road_side):
     messages = []
 
@@ -298,8 +304,3 @@ def boq_breakdown(total_cost):
         breakdown[item] = int(total_cost * ratio)
 
     return breakdown
-
-if area > build_area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")

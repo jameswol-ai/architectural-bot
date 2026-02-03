@@ -418,3 +418,16 @@ def room_schedule():
             add_room(f"Kitchen {i+1}", random.uniform(3,4), random.uniform(3,4), f, 7.0)
 
     return schedule
+
+seed = st.number_input("Design Seed (for repeatable results)", value=1)
+random.seed(seed)
+
+st.subheader("Assumptions & Limitations")
+st.info("""
+• Preliminary feasibility tool only
+• British Standards simplified guidance
+• Costs exclude land, VAT, fees, utilities
+• Final compliance subject to local authority approval
+""")
+
+st.caption("Architectural Feasibility Tool – v1.0 (Internal Use)")

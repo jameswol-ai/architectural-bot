@@ -1,7 +1,9 @@
 import streamlit as st
 import random
 
-# Imports from refactored modules
+# --------------------------
+# Imports from logic modules
+# --------------------------
 from logic.costing import cost_estimation, boq_breakdown
 from logic.codes_bs import british_standards_check
 from logic.site import plot_analysis
@@ -9,60 +11,21 @@ from logic.site import plot_analysis
 st.title("Architectural Feasibility Tool – Internal Use")
 
 # ====================
-# Inputs
+# Project Inputs
 # ====================
+st.subheader("Building Inputs")
+
 bedrooms = st.number_input("Number of Bedrooms", min_value=1, max_value=10, value=4)
 bathrooms = st.number_input("Number of Bathrooms", min_value=1, max_value=10, value=2)
 living_rooms = st.number_input("Number of Living Rooms", min_value=1, max_value=5, value=1)
 kitchens = st.number_input("Number of Kitchens", min_value=1, max_value=3, value=1)
 floors = st.number_input("Number of Storeys", min_value=1, max_value=5, value=1)
 
-st.subheader("Site Information")
-
-plot_length = st.number_input("Plot Length (m)", min_value=10, max_value=200, value=30)
-plot_width = st.number_input("Plot Width (m)", min_value=10, max_value=200, value=20)
-
-front_setback = st.number_input("Front Setback (m)", min_value=0, max_value=20, value=5)
-back_setback = st.number_input("Back Setback (m)", min_value=0, max_value=20, value=5)
-side_setback = st.number_input("Side Setback (m)", min_value=0, max_value=20, value=3)
-
-st.subheader("Plot Analysis")
-
-analysis, messages = plot_analysis(
-    plot_length, plot_width, front_setback, back_setback, side_setback
-)
-
-st.info(f"Total Plot Area: {analysis['total_plot_area']} m²")
-st.info(f"Usable Area after Setbacks: {analysis['usable_area']} m²")
-st.info(f"Site Coverage: {analysis['coverage_percent']}%")
-
-for msg in messages:
-    if msg.startswith("❌"):
-        st.error(msg)
-    else:
-        st.success(msg)
-        
-st.subheader("Basic Plot Layout (Text Representation)")
-
-# Ensure usable width is an integer for ASCII display
-ascii_width = max(1, int(round(analysis['usable_area'] ** 0.5)))  # approximate width
-
-layout = (
-    f"Front Setback: {front_setback}m\n"
-    f"{'=' * ascii_width}\n"
-    f"Usable Plot Area: {analysis['usable_area']} m²\n"
-    f"{'=' * ascii_width}\n"
-    f"Back Setback: {back_setback}m"
-)
-
-st.text(layout)
-
-# Seed for repeatable randomization
 seed = st.number_input("Design Seed (for repeatable results)", value=1)
 random.seed(seed)
 
 # ====================
-# British Standards Compliance Check
+# British Standards Compliance
 # ====================
 st.subheader("British Standards Compliance Check")
 
@@ -91,14 +54,13 @@ for level in ["Low Finish", "Medium Finish", "High Finish"]:
 
 st.subheader("BOQ-Style Cost Breakdown (Medium Finish)")
 boq = boq_breakdown(costs["Medium Finish"])
-
 for item, value in boq.items():
     st.success(f"{item}: £{value:,}")
 
 # ====================
 # Room Schedule Section
 # ====================
-st.subheader("Room Schedule (BS Compliant)")
+st.subheader("Room Schedule")
 
 def room_schedule():
     schedule = []
@@ -159,10 +121,49 @@ for row in schedule:
     else:
         st.success(row)
 
-# Download button for schedule
+# Download button for room schedule
 st.download_button(
     "Download Room Schedule",
     "\n".join(schedule),
     "room_schedule.txt",
     "text/plain"
-    )
+)
+
+# ====================
+# Site & Plot Logic
+# ====================
+st.subheader("Site Information")
+
+plot_length = st.number_input("Plot Length (m)", min_value=10, max_value=200, value=30)
+plot_width = st.number_input("Plot Width (m)", min_value=10, max_value=200, value=20)
+front_setback = st.number_input("Front Setback (m)", min_value=0, max_value=20, value=5)
+back_setback = st.number_input("Back Setback (m)", min_value=0, max_value=20, value=5)
+side_setback = st.number_input("Side Setback (m)", min_value=0, max_value=20, value=3)
+
+analysis, messages = plot_analysis(
+    plot_length, plot_width, front_setback, back_setback, side_setback
+)
+
+st.info(f"Total Plot Area: {analysis['total_plot_area']} m²")
+st.info(f"Usable Area after Setbacks: {analysis['usable_area']} m²")
+st.info(f"Site Coverage: {analysis['coverage_percent']}%")
+
+for msg in messages:
+    if msg.startswith("❌"):
+        st.error(msg)
+    else:
+        st.success(msg)
+
+# Type-safe ASCII plot
+st.subheader("Basic Plot Layout (Text Representation)")
+ascii_width = max(1, int(round((analysis['usable_area'] ** 0.5))))  # approximate width
+
+layout = (
+    f"Front Setback: {front_setback}m\n"
+    f"{'=' * ascii_width}\n"
+    f"Usable Plot Area: {analysis['usable_area']} m²\n"
+    f"{'=' * ascii_width}\n"
+    f"Back Setback: {back_setback}m"
+)
+
+st.text(layout)

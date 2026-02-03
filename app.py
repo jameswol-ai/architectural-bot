@@ -223,11 +223,6 @@ def cost_estimation():
         "High Finish": int(total_area * 1800)
     }
 
-    if area > build_area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")
-    
     return total_area, costs
 
   
@@ -235,6 +230,11 @@ else:
 
 st.subheader("Preliminary Cost Estimation (UK)")
 
+    if area > build_area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")
+    
 area, costs = cost_estimation()      
 st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 

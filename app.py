@@ -270,7 +270,15 @@ def site_analysis(plot_width, plot_depth, road_side):
     messages.append("💡 Bedrooms should avoid west orientation in hot climates")
     return messages
 
+st.subheader("BOQ-Style Cost Breakdown (Medium Finish)")
 
+_, costs = cost_estimation()
+medium_cost = costs["Medium Finish"]
+
+boq = boq_breakdown(medium_cost)
+
+for item, value in boq.items():
+    st.success(f"{item}: £{value:,}")
 
 
 st.subheader("Site Orientation & Plot Analysis")

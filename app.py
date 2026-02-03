@@ -12,7 +12,6 @@ def climate_analysis():
     return notes
 
 # app.py
-
 import streamlit as st
 import random
 
@@ -38,6 +37,24 @@ analyze = st.button("Analyze Layout")
 # -------------------------------
 # Room size generators (meters)
 # -------------------------------
+
+st.subheader("Room Schedule (British Standards)")
+
+schedule = room_schedule()
+
+for row in schedule:
+    if "❌" in row:
+        st.error(row)
+    else:
+        st.success(row)
+
+st.download_button(
+    "Download Room Schedule",
+    "\n".join(schedule),
+    "room_schedule.txt",
+    "text/plain"
+)
+
 def room_size(room_type):
     sizes = {
         "Bedroom": (3, 5),

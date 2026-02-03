@@ -1,4 +1,5 @@
-import streamlit as st
+import matplotlib.pyplot as plt
+import matplotlib.patches as patchesimport streamlit as st
 import random
 
 # --------------------------

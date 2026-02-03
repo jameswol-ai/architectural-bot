@@ -270,6 +270,11 @@ def site_analysis(plot_width, plot_depth, road_side):
 
     return messages
 
+if Design area > site area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")
+
 st.subheader("Site Orientation & Plot Analysis")
 
 for msg in site_analysis(plot_width, plot_depth, road_side):

@@ -44,11 +44,14 @@ for msg in messages:
         
 st.subheader("Basic Plot Layout (Text Representation)")
 
+# Ensure usable width is an integer for ASCII display
+ascii_width = max(1, int(round(analysis['usable_area'] ** 0.5)))  # approximate width
+
 layout = (
     f"Front Setback: {front_setback}m\n"
-    f"{'=' * int(round(usable_width))}\n"
+    f"{'=' * ascii_width}\n"
     f"Usable Plot Area: {analysis['usable_area']} m²\n"
-    f"{'=' * int(round(usable_width))}\n"
+    f"{'=' * ascii_width}\n"
     f"Back Setback: {back_setback}m"
 )
 

@@ -225,6 +225,11 @@ def cost_estimation():
     
     return total_area, costs
 
+if area > build_area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")    
+
 
 st.subheader("Preliminary Cost Estimation (UK)")
 
@@ -234,10 +239,6 @@ st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 for level, cost in costs.items():
     st.success(f"{level}: £{cost:,}")
     
-if area > build_area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")    
 
 def site_analysis(plot_width, plot_depth, road_side):
     messages = []

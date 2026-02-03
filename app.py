@@ -1,3 +1,9 @@
+
+st.header("Site Information")
+plot_width = st.number_input("Plot Width (m)", min_value=6.0, max_value=50.0, value=12.0)
+plot_depth = st.number_input("Plot Depth (m)", min_value=10.0, max_value=60.0, value=25.0)
+road_side = st.selectbox("Road Access Side", ["North", "South", "East", "West"])
+
 def climate_analysis():
     notes = []
     notes.append("🌞 Climate Mode: Hot / Tropical")
@@ -10,11 +16,6 @@ def climate_analysis():
     notes.append("💡 Encourage cross-ventilation in all habitable rooms")
 
     return notes
-
-st.header("Site Information")
-plot_width = st.number_input("Plot Width (m)", min_value=6.0, max_value=50.0, value=12.0)
-plot_depth = st.number_input("Plot Depth (m)", min_value=10.0, max_value=60.0, value=25.0)
-road_side = st.selectbox("Road Access Side", ["North", "South", "East", "West"])
 
 # app.py
 import streamlit as st

@@ -1,4 +1,4 @@
-import streamlit as st
+0pp⁰import streamlit as st
 import random
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -191,9 +191,10 @@ for msg in orientation_msgs:
 # ====================
 # Phase 5: Floorplan Visualization
 # ====================
-st.subheader("Floorplan Visualization")
+st.subheader("Floorplan Visualization – Scaled & Adjacent")
 
-def draw_floorplan(schedule):
+fig = draw_floorplan_adjacent(schedule, plot_length, plot_width)
+st.pyplot(fig)
     fig, ax = plt.subplots(figsize=(8, 8))
     x_offset = 0
     y_offset = 0

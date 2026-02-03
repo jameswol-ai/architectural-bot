@@ -1,3 +1,5 @@
+from logic.costing import cost_estimation, boq_breakdown
+
 def climate_analysis():
     notes = []
     notes.append("🌞 Climate Mode: Hot / Tropical")
@@ -299,16 +301,16 @@ def cost_estimation():
 
     return total_area, costs
 
-  
-
-
 st.subheader("Preliminary Cost Estimation (UK)")
-    
-area, costs = cost_estimation()      
+
+costs = cost_estimation(bedrooms, bathrooms, living_rooms, kitchens)
+area = costs["area"]
+
 st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 
-for level, cost in costs.items():
-    st.success(f"{level}: £{cost:,}")
+for level in ["Low Finish", "Medium Finish", "High Finish"]:
+    st.success(f"{level}: £{costs[level]:,}")
+  
 
 
 def site_analysis(plot_width, plot_depth, road_side):
@@ -372,16 +374,14 @@ def boq_breakdown(total_cost):
         breakdown[item] = int(total_cost * ratio)
 
     return breakdown
+
 st.subheader("BOQ-Style Cost Breakdown (Medium Finish)")
 
-_, costs = cost_estimation()
-medium_cost = costs["Medium Finish"]
-
-boq = boq_breakdown(medium_cost)
+boq = boq_breakdown(costs["Medium Finish"])
 
 for item, value in boq.items():
     st.success(f"{item}: £{value:,}")
-
+    
 boq_text = "BOQ COST BREAKDOWN (MEDIUM FINISH)\n"
 boq_text += "=" * 50 + "\n"
 for item, value in boq.items():

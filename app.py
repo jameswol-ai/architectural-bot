@@ -238,7 +238,7 @@ for level, cost in costs.items():
     st.success(f"{level}: £{cost:,}")
 
 
-if floor area > plot:
+if total_area > plot area:
     st.error("❌ Design exceeds buildable plot area")
 else:
     st.success("✔ Design fits within buildable plot area")

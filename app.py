@@ -265,3 +265,15 @@ def site_analysis(plot_width, plot_depth, road_side):
     messages.append("💡 Bedrooms should avoid west orientation in hot climates")
 
     return messages
+
+st.subheader("Site Orientation & Plot Analysis")
+
+for msg in site_analysis(plot_width, plot_depth, road_side):
+    if msg.startswith("❌"):
+        st.error(msg)
+    elif msg.startswith("⚠"):
+        st.warning(msg)
+    elif msg.startswith("💡"):
+        st.info(msg)
+    else:
+        st.success(msg)

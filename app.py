@@ -201,12 +201,6 @@ for msg in adjacency_analysis():
         st.success(msg)
         
 def cost_estimation():
-
-    if area > build_area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")
-    
     # Average areas per room (m²)
     bedroom_area = 12
     living_area = 18
@@ -228,6 +222,11 @@ else:
         "Medium Finish": int(total_area * 1500),
         "High Finish": int(total_area * 1800)
     }
+
+    if area > build_area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")
     
     return total_area, costs
 

@@ -33,6 +33,23 @@ variations = st.number_input("Number of Plan Variations", min_value=1, max_value
 generate = st.button("Generate Floor Plans")
 analyze = st.button("Analyze Layout")
 
+st.subheader("Room Schedule (British Standards)")
+
+schedule = room_schedule()
+
+for row in schedule:
+    if "❌" in row:
+        st.error(row)
+    else:
+        st.success(row)
+
+st.download_button(
+    "Download Room Schedule",
+    "\n".join(schedule),
+    "room_schedule.txt",
+    "text/plain"
+)
+
 # -------------------------------
 # Room size generators (meters)
 # -------------------------------
@@ -321,3 +338,27 @@ st.download_button(
     "text/plain"
 )
 
+def room_schedule():
+    schedule = []
+
+    def add_room(name, w, l, floor, min_area):
+        area = round(w * l, 1)
+        status = "✔ BS compliant" if area >= min_area else "❌ Below BS minimum"
+        schedule.append(
+            f"{name} | {w}x{l} m | {area} m² | Floor {floor} | {status}"
+        )
+
+    for f in range(1, floors + 1):
+        for i in range(bedrooms // floors):
+            add_room(f"Bedroom {i+1}", random.uniform(3,4), random.uniform(3,4.5), f, 11.5)
+
+        for i in range(bathrooms // floors):
+            add_room(f"Bathroom {i+1}", random.uniform(2,2.5), random.uniform(2,2.5), f, 3.0)
+
+        for i in range(living_rooms // floors):
+            add_room(f"Living Room {i+1}", random.uniform(4,5), random.uniform(4,5), f, 13.0)
+
+        for i in range(kitchens // floors):
+            add_room(f"Kitchen {i+1}", random.uniform(3,4), random.uniform(3,4), f, 7.0)
+
+    return schedule

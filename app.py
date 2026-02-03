@@ -222,8 +222,8 @@ def cost_estimation():
         "Medium Finish": int(total_area * 1500),
         "High Finish": int(total_area * 1800)
     }
-
-return total_area, costs
+    
+    return total_area, costs
 
 
 st.subheader("Preliminary Cost Estimation (UK)")

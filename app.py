@@ -41,14 +41,14 @@ for msg in messages:
         st.error(msg)
     else:
         st.success(msg)
-
+        
 st.subheader("Basic Plot Layout (Text Representation)")
 
 layout = (
     f"Front Setback: {front_setback}m\n"
-    f"{'=' * int(usable_width)}\n"
+    f"{'=' * int(round(usable_width))}\n"
     f"Usable Plot Area: {analysis['usable_area']} m²\n"
-    f"{'=' * int(usable_width)}\n"
+    f"{'=' * int(round(usable_width))}\n"
     f"Back Setback: {back_setback}m"
 )
 

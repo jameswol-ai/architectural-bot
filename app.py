@@ -11,22 +11,6 @@ def climate_analysis():
 
     return notes
 
-st.subheader("Room Schedule (British Standards)")
-
-schedule = room_schedule()
-
-for row in schedule:
-    if "❌" in row:
-        st.error(row)
-    else:
-        st.success(row)
-
-st.download_button(
-    "Download Room Schedule",
-    "\n".join(schedule),
-    "room_schedule.txt",
-    "text/plain"
-)
 
 # app.py
 import streamlit as st
@@ -67,6 +51,23 @@ def room_size(room_type):
     length = random.randint(min_s, max_s)
     return f"{width}x{length}m"
 
+
+st.subheader("Room Schedule (British Standards)")
+
+schedule = room_schedule()
+
+for row in schedule:
+    if "❌" in row:
+        st.error(row)
+    else:
+        st.success(row)
+
+st.download_button(
+    "Download Room Schedule",
+    "\n".join(schedule),
+    "room_schedule.txt",
+    "text/plain"
+)
 # -------------------------------
 # Generate multi-floor plan
 # -------------------------------

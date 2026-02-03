@@ -1,6 +1,7 @@
-import matplotlib.pyplot as plt
-import matplotlib.patches as patchesimport streamlit as st
+import streamlit as st
 import random
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 # --------------------------
 # Imports from logic modules
@@ -131,64 +132,6 @@ st.download_button(
     "text/plain"
 )
 
-def draw_floorplan(schedule):
-    fig, ax = plt.subplots(figsize=(8, 8))
-    x_offset = 0
-    y_offset = 0
-    for idx, room in enumerate(schedule):
-        # Parse room info: "Bedroom 1 | 3.5x4.0 m | 14.0 m² | Floor 1 | ✔ BS compliant"
-        parts = room.split("|")
-        name = parts[0].strip()
-        dims = parts[1].strip().split("x")
-        width = float(dims[0])
-        length = float(dims[1])
-        area = float(parts[2].strip().split()[0])
-
-        # Assign color based on room type
-        if "Bedroom" in name:
-            color = "lightblue"
-        elif "Bathroom" in name:
-            color = "skyblue"
-        elif "Living" in name:
-            color = "lightgreen"
-        elif "Kitchen" in name:
-            color = "orange"
-        else:
-            color = "grey"
-
-        # Draw rectangle
-        rect = patches.Rectangle(
-            (x_offset, y_offset), width, length,
-            linewidth=1, edgecolor='black', facecolor=color
-        )
-        ax.add_patch(rect)
-
-        # Label rectangle
-        ax.text(
-            x_offset + width/2, y_offset + length/2,
-            f"{name}\n{area} m²",
-            ha='center', va='center', fontsize=8
-        )
-
-        # Move x offset for next room, wrap to new row if needed
-        x_offset += width + 0.5
-        if x_offset > 15:  # max row width
-            x_offset = 0
-            y_offset += length + 0.5
-
-    ax.set_xlim(0, 20)
-    ax.set_ylim(0, y_offset + 5)
-    ax.set_aspect('equal')
-    ax.set_title("Floorplan Visualization (Approximate)")
-    ax.axis('off')
-    return fig
-
-st.subheader("Floorplan Visualization")
-
-fig = draw_floorplan(schedule)
-st.pyplot(fig)
-
-
 # ====================
 # Site & Plot Logic
 # ====================
@@ -244,3 +187,66 @@ st.subheader("Orientation Alerts")
 for msg in orientation_msgs:
     if "west" in msg.lower() and "living room" in msg.lower():
         st.warning(msg + " ⚠ May overheat in afternoon.")
+
+# ====================
+# Phase 5: Floorplan Visualization
+# ====================
+st.subheader("Floorplan Visualization")
+
+def draw_floorplan(schedule):
+    fig, ax = plt.subplots(figsize=(8, 8))
+    x_offset = 0
+    y_offset = 0
+    max_row_height = 0
+
+    for idx, room in enumerate(schedule):
+        parts = room.split("|")
+        name = parts[0].strip()
+        dims = parts[1].strip().split("x")
+        width = float(dims[0])
+        length = float(dims[1])
+        area = float(parts[2].strip().split()[0])
+
+        # Color based on room type
+        if "Bedroom" in name:
+            color = "lightblue"
+        elif "Bathroom" in name:
+            color = "skyblue"
+        elif "Living" in name:
+            color = "lightgreen"
+        elif "Kitchen" in name:
+            color = "orange"
+        else:
+            color = "grey"
+
+        # Draw rectangle
+        rect = patches.Rectangle(
+            (x_offset, y_offset), width, length,
+            linewidth=1, edgecolor='black', facecolor=color
+        )
+        ax.add_patch(rect)
+
+        # Label rectangle
+        ax.text(
+            x_offset + width/2, y_offset + length/2,
+            f"{name}\n{area} m²",
+            ha='center', va='center', fontsize=8
+        )
+
+        # Update offsets
+        x_offset += width + 0.5
+        max_row_height = max(max_row_height, length)
+        if x_offset > 15:
+            x_offset = 0
+            y_offset += max_row_height + 0.5
+            max_row_height = 0
+
+    ax.set_xlim(0, 20)
+    ax.set_ylim(0, y_offset + 10)
+    ax.set_aspect('equal')
+    ax.set_title("Floorplan Visualization (Approximate)")
+    ax.axis('off')
+    return fig
+
+fig = draw_floorplan(schedule)
+st.pyplot(fig)

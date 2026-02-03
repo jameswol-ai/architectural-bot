@@ -1,4 +1,4 @@
-from logic.codes_bs import british_standards_check
+
 
 from logic.costing import cost_estimation, boq_breakdown
 
@@ -36,6 +36,14 @@ variations = st.number_input("Number of Plan Variations", min_value=1, max_value
 
 generate = st.button("Generate Floor Plans")
 analyze = st.button("Analyze Layout")
+
+floors = st.number_input(
+    "Number of Storeys",
+    min_value=1,
+    max_value=5,
+    value=1,
+    step=1
+)
 
 def room_schedule():
     schedule = []
@@ -92,14 +100,6 @@ def room_schedule():
 
     return schedule
 
-
-floors = st.number_input(
-    "Number of Storeys",
-    min_value=1,
-    max_value=5,
-    value=1,
-    step=1
-)
 
 
 st.subheader("Room Schedule (British Standards)")
@@ -252,6 +252,8 @@ def british_standards_check():
     return issues
 
 
+from logic.codes_bs import british_standards_check
+
 st.subheader("British Standards Compliance Check")
 
 bs_issues = british_standards_check(
@@ -263,7 +265,6 @@ for msg in bs_issues:
         st.error(msg)
     else:
         st.success(msg)
-
 def adjacency_analysis():
     issues = []
 

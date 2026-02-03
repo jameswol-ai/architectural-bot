@@ -49,6 +49,60 @@ st.download_button(
     "room_schedule.txt",
     "text/plain"
 )
+def room_schedule():
+    schedule = []
+
+    def add_room(name, w, l, floor, min_area):
+        area = round(w * l, 1)
+        status = "✔ BS compliant" if area >= min_area else "❌ Below BS minimum"
+        schedule.append(
+            f"{name} | {w:.1f}x{l:.1f} m | {area} m² | Floor {floor} | {status}"
+        )
+
+    beds_pf = max(1, bedrooms // floors)
+    baths_pf = max(1, bathrooms // floors)
+    living_pf = max(1, living_rooms // floors)
+    kitchens_pf = max(1, kitchens // floors)
+
+    for f in range(1, floors + 1):
+
+        for i in range(beds_pf):
+            add_room(
+                f"Bedroom {i+1}",
+                random.uniform(3.0, 4.2),
+                random.uniform(3.0, 4.5),
+                f,
+                11.5
+            )
+
+        for i in range(baths_pf):
+            add_room(
+                f"Bathroom {i+1}",
+                random.uniform(2.0, 2.5),
+                random.uniform(2.0, 2.5),
+                f,
+                3.0
+            )
+
+        for i in range(living_pf):
+            add_room(
+                f"Living Room {i+1}",
+                random.uniform(4.0, 5.5),
+                random.uniform(4.0, 5.5),
+                f,
+                13.0
+            )
+
+        for i in range(kitchens_pf):
+            add_room(
+                f"Kitchen {i+1}",
+                random.uniform(3.0, 4.0),
+                random.uniform(3.0, 4.0),
+                f,
+                7.0
+            )
+
+    return schedule
 # -------------------------------
 # Room size generators (meters)
 # ------------------------------

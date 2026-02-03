@@ -34,22 +34,6 @@ variations = st.number_input("Number of Plan Variations", min_value=1, max_value
 generate = st.button("Generate Floor Plans")
 analyze = st.button("Analyze Layout")
 
-st.subheader("Room Schedule (British Standards)")
-
-schedule = room_schedule()
-
-for row in schedule:
-    if "❌" in row:
-        st.error(row)
-    else:
-        st.success(row)
-
-st.download_button(
-    "Download Room Schedule",
-    "\n".join(schedule),
-    "room_schedule.txt",
-    "text/plain"
-)
 
 # -------------------------------
 # Room size generators (meters)

@@ -245,7 +245,9 @@ for msg in british_standards_check():
         st.error(msg)
     else:
         st.success(msg)
-        
+  def british_standards_check():
+    ...
+      
 def adjacency_analysis():
     issues = []
 

@@ -33,11 +33,6 @@ variations = st.number_input("Number of Plan Variations", min_value=1, max_value
 generate = st.button("Generate Floor Plans")
 analyze = st.button("Analyze Layout")
 
-
-# -------------------------------
-# Room size generators (meters)
-# -------------------------------
-
 st.subheader("Room Schedule (British Standards)")
 
 schedule = room_schedule()
@@ -54,7 +49,9 @@ st.download_button(
     "room_schedule.txt",
     "text/plain"
 )
-
+# -------------------------------
+# Room size generators (meters)
+# ------------------------------
 def room_size(room_type):
     sizes = {
         "Bedroom": (3, 5),

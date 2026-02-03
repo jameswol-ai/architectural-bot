@@ -300,5 +300,19 @@ def boq_breakdown(total_cost):
         breakdown[item] = int(total_cost * ratio)
 
     return breakdown
+def boq_breakdown(total_cost):
+    boq = {
+        "Substructure (Foundations)": 0.15,
+        "Superstructure (Frame, Walls, Roof)": 0.35,
+        "Finishes": 0.20,
+        "Services (MEP)": 0.15,
+        "External Works": 0.05,
+        "Preliminaries & Contingency": 0.10
+    }
 
+    breakdown = {}
+    for item, ratio in boq.items():
+        breakdown[item] = int(total_cost * ratio)
+
+    return breakdown
 

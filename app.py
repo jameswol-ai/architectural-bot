@@ -309,5 +309,15 @@ boq = boq_breakdown(medium_cost)
 for item, value in boq.items():
     st.success(f"{item}: £{value:,}")
 
+boq_text = "BOQ COST BREAKDOWN (MEDIUM FINISH)\n"
+boq_text += "=" * 50 + "\n"
+for item, value in boq.items():
+    boq_text += f"{item}: £{value:,}\n"
 
+st.download_button(
+    "Download BOQ (.txt)",
+    boq_text,
+    "boq_cost_breakdown.txt",
+    "text/plain"
+)
 

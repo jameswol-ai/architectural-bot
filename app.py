@@ -169,6 +169,9 @@ layout = (
 
 st.text(layout)
 
+# ====================
+# Phase 4: Orientation Recommendations
+# ====================
 st.subheader("Room Orientation Recommendations")
 
 orientation_msgs = room_orientation_recommendation(

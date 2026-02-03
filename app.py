@@ -204,10 +204,16 @@ def draw_floorplan_adjacent(schedule, plot_length, plot_width):
     for room in ordered_rooms:
         parts = room.split("|")
         name = parts[0].strip()
-        dims = parts[1].strip().split("x")
+     dims = parts[1].strip().lower().replace("m", "").split("x")
+if len(dims) != 2:
+    # fallback in case parsing fails
+    width, length = 3.0, 3.0
+else:
+    try:
         width = float(dims[0])
         length = float(dims[1])
-        area = float(parts[2].strip().split()[0])
+    except:
+        width, length = 3.0, 3.0
 
         # Scale to plot
         scale_x = plot_width / (plot_width + 5)

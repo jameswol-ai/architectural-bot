@@ -302,11 +302,6 @@ def cost_estimation():
     circulation_factor = 1.25  # walls, corridors, stairs
     total_area = base_area * circulation_factor
 
-    costs = {
-        "Low Finish": int(total_area * 1200),
-        "Medium Finish": int(total_area * 1500),
-        "High Finish": int(total_area * 1800)
-    }
 
     return total_area, costs
 

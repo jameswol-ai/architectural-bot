@@ -92,6 +92,16 @@ def room_schedule():
 
     return schedule
 
+
+floors = st.number_input(
+    "Number of Storeys",
+    min_value=1,
+    max_value=5,
+    value=1,
+    step=1
+)
+
+
 st.subheader("Room Schedule (British Standards)")
 
 schedule = room_schedule()
@@ -167,13 +177,6 @@ def generate_plan(floors, bedrooms, bathrooms, living_rooms, kitchens):
     layout += "=" * 65
     return layout
 
-floors = st.number_input(
-    "Number of Storeys",
-    min_value=1,
-    max_value=5,
-    value=1,
-    step=1
-)
 
 # -------------------------------
 # Layout analysis

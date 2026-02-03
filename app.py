@@ -124,7 +124,6 @@ for row in schedule:
     else:
         st.success(row)
 
-# Download button for room schedule
 st.download_button(
     "Download Room Schedule",
     "\n".join(schedule),
@@ -157,10 +156,7 @@ for msg in messages:
     else:
         st.success(msg)
 
-# Type-safe ASCII plot
-st.subheader("Basic Plot Layout (Text Representation)")
-ascii_width = max(1, int(round((analysis['usable_area'] ** 0.5))))  # safe width
-
+ascii_width = max(1, int(round((analysis['usable_area'] ** 0.5))))
 layout = (
     f"Front Setback: {front_setback}m\n"
     f"{'=' * ascii_width}\n"
@@ -168,18 +164,15 @@ layout = (
     f"{'=' * ascii_width}\n"
     f"Back Setback: {back_setback}m"
 )
-
 st.text(layout)
 
 # ====================
-# Phase 4: Orientation Recommendations
+# Phase 4: Orientation
 # ====================
 st.subheader("Room Orientation Recommendations")
-
 orientation_msgs = room_orientation_recommendation(
     plot_length, plot_width, living_rooms, bedrooms, kitchens
 )
-
 for msg in orientation_msgs:
     st.info(msg)
 
@@ -189,18 +182,26 @@ for msg in orientation_msgs:
         st.warning(msg + " ⚠ May overheat in afternoon.")
 
 # ====================
-# Phase 5: Floorplan Visualization
+# Phase 6: Scaled Adjacent Floorplan
 # ====================
 st.subheader("Floorplan Visualization – Scaled & Adjacent")
 
-fig = draw_floorplan_adjacent(schedule, plot_length, plot_width)
-st.pyplot(fig)
-    fig, ax = plt.subplots(figsize=(8, 8))
-    x_offset = 0
-    y_offset = 0
-    max_row_height = 0
+def draw_floorplan_adjacent(schedule, plot_length, plot_width):
+    fig, ax = plt.subplots(figsize=(10, 10))
+    margin = 0.5
+    x_cursor = margin
+    y_cursor = margin
+    row_height = 0
 
-    for idx, room in enumerate(schedule):
+    # Separate rooms by type
+    bedroom_list = [r for r in schedule if "Bedroom" in r]
+    bathroom_list = [r for r in schedule if "Bathroom" in r]
+    living_list = [r for r in schedule if "Living" in r]
+    kitchen_list = [r for r in schedule if "Kitchen" in r]
+
+    ordered_rooms = bedroom_list + bathroom_list + living_list + kitchen_list
+
+    for room in ordered_rooms:
         parts = room.split("|")
         name = parts[0].strip()
         dims = parts[1].strip().split("x")
@@ -208,7 +209,13 @@ st.pyplot(fig)
         length = float(dims[1])
         area = float(parts[2].strip().split()[0])
 
-        # Color based on room type
+        # Scale to plot
+        scale_x = plot_width / (plot_width + 5)
+        scale_y = plot_length / (plot_length + 5)
+        w_scaled = width * scale_x
+        l_scaled = length * scale_y
+
+        # Color coding
         if "Bedroom" in name:
             color = "lightblue"
         elif "Bathroom" in name:
@@ -220,34 +227,33 @@ st.pyplot(fig)
         else:
             color = "grey"
 
-        # Draw rectangle
+        # Row wrap
+        if x_cursor + w_scaled > plot_width:
+            x_cursor = margin
+            y_cursor += row_height + margin
+            row_height = 0
+
         rect = patches.Rectangle(
-            (x_offset, y_offset), width, length,
+            (x_cursor, y_cursor), w_scaled, l_scaled,
             linewidth=1, edgecolor='black', facecolor=color
         )
         ax.add_patch(rect)
 
-        # Label rectangle
         ax.text(
-            x_offset + width/2, y_offset + length/2,
+            x_cursor + w_scaled / 2, y_cursor + l_scaled / 2,
             f"{name}\n{area} m²",
             ha='center', va='center', fontsize=8
         )
 
-        # Update offsets
-        x_offset += width + 0.5
-        max_row_height = max(max_row_height, length)
-        if x_offset > 15:
-            x_offset = 0
-            y_offset += max_row_height + 0.5
-            max_row_height = 0
+        x_cursor += w_scaled + margin
+        row_height = max(row_height, l_scaled)
 
-    ax.set_xlim(0, 20)
-    ax.set_ylim(0, y_offset + 10)
+    ax.set_xlim(0, plot_width + margin)
+    ax.set_ylim(0, y_cursor + row_height + margin)
     ax.set_aspect('equal')
-    ax.set_title("Floorplan Visualization (Approximate)")
+    ax.set_title("Floorplan Visualization (Scaled & Adjacent)")
     ax.axis('off')
     return fig
 
-fig = draw_floorplan(schedule)
+fig = draw_floorplan_adjacent(schedule, plot_length, plot_width)
 st.pyplot(fig)

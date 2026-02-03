@@ -1,3 +1,5 @@
+from logic.codes_bs import british_standards_check
+
 from logic.costing import cost_estimation, boq_breakdown
 
 def climate_analysis():
@@ -240,7 +242,12 @@ def british_standards_check():
 
 
 st.subheader("British Standards Compliance Check")
-for msg in british_standards_check():
+
+bs_issues = british_standards_check(
+    bedrooms, bathrooms, living_rooms, kitchens, floors
+)
+
+for msg in bs_issues:
     if msg.startswith("❌"):
         st.error(msg)
     else:

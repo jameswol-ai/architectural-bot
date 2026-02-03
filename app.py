@@ -277,3 +277,8 @@ for msg in site_analysis(plot_width, plot_depth, road_side):
         st.info(msg)
     else:
         st.success(msg)
+
+if area > build_area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")

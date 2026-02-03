@@ -299,7 +299,3 @@ def boq_breakdown(total_cost):
     return breakdown
 
 
-if total_area > Plot Area:
-    st.error("❌ Design exceeds buildable plot area")
-else:
-    st.success("✔ Design fits within buildable plot area")

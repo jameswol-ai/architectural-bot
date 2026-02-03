@@ -232,3 +232,36 @@ st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 
 for level, cost in costs.items():
     st.success(f"{level}: £{cost:,}")
+
+def site_analysis(plot_width, plot_depth, road_side):
+    messages = []
+
+    # Setbacks
+    front = 3.0
+    rear = 3.0
+    side = 1.5
+
+    build_width = plot_width - (side * 2)
+    build_depth = plot_depth - (front + rear)
+    build_area = build_width * build_depth
+
+    plot_area = plot_width * plot_depth
+
+    messages.append(f"Plot Area: {plot_area:.1f} m²")
+    messages.append(f"Buildable Area (after setbacks): {build_area:.1f} m²")
+
+    if build_width <= 0 or build_depth <= 0:
+        messages.append("❌ Plot too small after setbacks")
+        return messages
+
+    messages.append(f"✔ Road access from {road_side}")
+
+    if road_side in ["West"]:
+        messages.append("⚠ West-facing road – protect entrance from afternoon sun")
+    else:
+        messages.append("✔ Road orientation acceptable for main entrance")
+
+    messages.append("💡 Living spaces recommended away from road for privacy")
+    messages.append("💡 Bedrooms should avoid west orientation in hot climates")
+
+    return messages

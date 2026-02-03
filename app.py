@@ -7,6 +7,7 @@ import random
 from logic.costing import cost_estimation, boq_breakdown
 from logic.codes_bs import british_standards_check
 from logic.site import plot_analysis
+from logic.orientation import room_orientation_recommendation
 
 st.title("Architectural Feasibility Tool – Internal Use")
 
@@ -167,3 +168,18 @@ layout = (
 )
 
 st.text(layout)
+
+st.subheader("Room Orientation Recommendations")
+
+orientation_msgs = room_orientation_recommendation(
+    plot_length, plot_width, living_rooms, bedrooms, kitchens
+)
+
+for msg in orientation_msgs:
+    st.info(msg)
+
+st.subheader("Orientation Alerts")
+
+for msg in orientation_msgs:
+    if "west" in msg.lower() and "living room" in msg.lower():
+        st.warning(msg + " ⚠ May overheat in afternoon.")

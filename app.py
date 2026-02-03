@@ -12,7 +12,7 @@ from logic.orientation import room_orientation_recommendation
 st.title("Architectural Feasibility Tool – Internal Use")
 
 # ====================
-# Project Inputs
+# Building Inputs
 # ====================
 st.subheader("Building Inputs")
 
@@ -157,7 +157,7 @@ for msg in messages:
 
 # Type-safe ASCII plot
 st.subheader("Basic Plot Layout (Text Representation)")
-ascii_width = max(1, int(round((analysis['usable_area'] ** 0.5))))  # approximate width
+ascii_width = max(1, int(round((analysis['usable_area'] ** 0.5))))  # safe width
 
 layout = (
     f"Front Setback: {front_setback}m\n"
@@ -182,7 +182,6 @@ for msg in orientation_msgs:
     st.info(msg)
 
 st.subheader("Orientation Alerts")
-
 for msg in orientation_msgs:
     if "west" in msg.lower() and "living room" in msg.lower():
         st.warning(msg + " ⚠ May overheat in afternoon.")

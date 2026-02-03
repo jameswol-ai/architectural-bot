@@ -315,8 +315,10 @@ def cost_estimation():
 
     return total_area, costs
 
+
 st.subheader("Preliminary Cost Estimation (UK)")
 
+# Call the refactored function
 costs = cost_estimation(bedrooms, bathrooms, living_rooms, kitchens)
 area = costs["area"]
 
@@ -324,7 +326,13 @@ st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 
 for level in ["Low Finish", "Medium Finish", "High Finish"]:
     st.success(f"{level}: £{costs[level]:,}")
-  
+
+# BOQ breakdown
+st.subheader("BOQ-Style Cost Breakdown (Medium Finish)")
+boq = boq_breakdown(costs["Medium Finish"])
+
+for item, value in boq.items():
+    st.success(f"{item}: £{value:,}")
 
 
 def site_analysis(plot_width, plot_depth, road_side):

@@ -4,6 +4,7 @@ import random
 # Imports from refactored modules
 from logic.costing import cost_estimation, boq_breakdown
 from logic.codes_bs import british_standards_check
+from logic.site import plot_analysis
 
 st.title("Architectural Feasibility Tool – Internal Use")
 
@@ -15,6 +16,43 @@ bathrooms = st.number_input("Number of Bathrooms", min_value=1, max_value=10, va
 living_rooms = st.number_input("Number of Living Rooms", min_value=1, max_value=5, value=1)
 kitchens = st.number_input("Number of Kitchens", min_value=1, max_value=3, value=1)
 floors = st.number_input("Number of Storeys", min_value=1, max_value=5, value=1)
+
+st.subheader("Site Information")
+
+plot_length = st.number_input("Plot Length (m)", min_value=10, max_value=200, value=30)
+plot_width = st.number_input("Plot Width (m)", min_value=10, max_value=200, value=20)
+
+front_setback = st.number_input("Front Setback (m)", min_value=0, max_value=20, value=5)
+back_setback = st.number_input("Back Setback (m)", min_value=0, max_value=20, value=5)
+side_setback = st.number_input("Side Setback (m)", min_value=0, max_value=20, value=3)
+
+st.subheader("Plot Analysis")
+
+analysis, messages = plot_analysis(
+    plot_length, plot_width, front_setback, back_setback, side_setback
+)
+
+st.info(f"Total Plot Area: {analysis['total_plot_area']} m²")
+st.info(f"Usable Area after Setbacks: {analysis['usable_area']} m²")
+st.info(f"Site Coverage: {analysis['coverage_percent']}%")
+
+for msg in messages:
+    if msg.startswith("❌"):
+        st.error(msg)
+    else:
+        st.success(msg)
+
+st.subheader("Basic Plot Layout (Text Representation)")
+
+layout = (
+    f"Front Setback: {front_setback}m\n"
+    f"{'=' * int(usable_width)}\n"
+    f"Usable Plot Area: {analysis['usable_area']} m²\n"
+    f"{'=' * int(usable_width)}\n"
+    f"Back Setback: {back_setback}m"
+)
+
+st.text(layout)
 
 # Seed for repeatable randomization
 seed = st.number_input("Design Seed (for repeatable results)", value=1)

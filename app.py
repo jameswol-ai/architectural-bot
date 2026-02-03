@@ -1,11 +1,3 @@
-import streamlit as st
-import random
-
-from logic.costing import cost_estimation, boq_breakdown
-from logic.codes_bs import british_standards_check
-
-from logic.costing import cost_estimation, boq_breakdown
-
 def climate_analysis():
     notes = []
     notes.append("🌞 Climate Mode: Hot / Tropical")
@@ -29,15 +21,26 @@ st.header("Site Information")
 plot_width = st.number_input("Plot Width (m)", min_value=6.0, max_value=50.0, value=12.0)
 plot_depth = st.number_input("Plot Depth (m)", min_value=10.0, max_value=60.0, value=25.0)
 road_side = st.selectbox("Road Access Side", ["North", "South", "East", "West"])
+import streamlit as st
+import random
 
-st.header("Project Requirements")
-floors = st.number_input("Number of Floors", min_value=1, max_value=5, value=2)
-bedrooms = st.number_input("Number of Bedrooms (Total)", min_value=0, max_value=20, value=4)
-bathrooms = st.number_input("Number of Bathrooms (Total)", min_value=0, max_value=10, value=3)
-living_rooms = st.number_input("Number of Living Rooms (Total)", min_value=0, max_value=5, value=1)
-kitchens = st.number_input("Number of Kitchens (Total)", min_value=0, max_value=3, value=1)
-variations = st.number_input("Number of Plan Variations", min_value=1, max_value=5, value=2)
+# Imports from refactored modules
+from logic.costing import cost_estimation, boq_breakdown
+from logic.codes_bs import british_standards_check
 
+st.title("Architectural Feasibility Tool – Internal Use")
+
+# ====================
+# Inputs
+# ====================
+bedrooms = st.number_input("Number of Bedrooms", min_value=1, max_value=10, value=4)
+bathrooms = st.number_input("Number of Bathrooms", min_value=1, max_value=10, value=2)
+living_rooms = st.number_input("Number of Living Rooms", min_value=1, max_value=5, value=1)
+kitchens = st.number_input("Number of Kitchens", min_value=1, max_value=3, value=1)
+floors = st.number_input("Number of Storeys", min_value=1, max_value=5, value=1)
+
+seed = st.number_input("Design Seed (for repeatable results)", value=1)
+random.seed(seed)
 generate = st.button("Generate Floor Plans")
 analyze = st.button("Analyze Layout")
 
@@ -269,6 +272,8 @@ for msg in bs_issues:
         st.error(msg)
     else:
         st.success(msg)
+
+
 def adjacency_analysis():
     issues = []
 
@@ -319,10 +324,8 @@ def cost_estimation():
 
     return total_area, costs
 
-
 st.subheader("Preliminary Cost Estimation (UK)")
 
-# Call the refactored function
 costs = cost_estimation(bedrooms, bathrooms, living_rooms, kitchens)
 area = costs["area"]
 
@@ -331,7 +334,6 @@ st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 for level in ["Low Finish", "Medium Finish", "High Finish"]:
     st.success(f"{level}: £{costs[level]:,}")
 
-# BOQ breakdown
 st.subheader("BOQ-Style Cost Breakdown (Medium Finish)")
 boq = boq_breakdown(costs["Medium Finish"])
 

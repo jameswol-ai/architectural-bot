@@ -326,8 +326,6 @@ def cost_estimation():
 
 st.subheader("Preliminary Cost Estimation (UK)")
 
-costs = cost_estimation(bedrooms, bathrooms, living_rooms, kitchens)
-area = costs["area"]
 
 st.info(f"Estimated Gross Floor Area: {int(area)} m²")
 

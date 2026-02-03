@@ -298,3 +298,8 @@ def boq_breakdown(total_cost):
         breakdown[item] = int(total_cost * ratio)
 
     return breakdown
+
+if area > build_area:
+    st.error("❌ Design exceeds buildable plot area")
+else:
+    st.success("✔ Design fits within buildable plot area")
